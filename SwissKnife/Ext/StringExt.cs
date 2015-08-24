@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Text;
+using System.Text.RegularExpressions;
 
 namespace SwissKnife.Ext
 {
@@ -27,6 +28,81 @@ namespace SwissKnife.Ext
             }
 
             return formattedText;
+        }
+
+        #endregion
+
+        #region Casing
+
+        /// <summary>
+        /// Converts the specified string to title case (e.g. Beer and wine > Beer And Wine)
+        /// </summary>
+        /// <param name="format">Text to format</param>
+        /// <param name="uppercaseAsAcronyms">Consider words that are entirely in uppercase to be acronyms</param>
+        /// <returns></returns>
+        public static string ToTitleCase(this string format, bool trimLeadingSpaces = true, bool uppercaseAsAcronyms = true)
+        {
+            if (trimLeadingSpaces)
+                format = format.TrimStart(' ');
+
+            if (!uppercaseAsAcronyms)
+                format = format.ToLower();
+
+            return System.Globalization.CultureInfo.InvariantCulture.TextInfo.ToTitleCase(format);
+        }
+
+        /// <summary>
+        /// Converts the specified string to Pascal Case (e.g. Beer and wine > BeerAndWine)
+        /// </summary>
+        /// <param name="format">Text to format</param>
+        /// <param name="uppercaseAsAcronyms">Consider words that are entirely in uppercase to be acronyms</param>
+        /// <returns></returns>
+        public static string ToPascalCase(this string format, bool trimLeadingSpaces = true, bool uppercaseAsAcronyms = true)
+        {
+            int amountOfSpacesToAdd = 0;
+
+            // TODO Find / discuss a better implementation, seems a bit verbose.
+            if (!trimLeadingSpaces)
+            {
+                for (int i = 0; i < format.Length; i++)
+                {
+                    if (format[i] == ' ')
+                        amountOfSpacesToAdd++;
+                    else
+                        break;
+                }
+            }
+
+            if (amountOfSpacesToAdd > 0)
+            {
+                return string.Empty.PadLeft(amountOfSpacesToAdd, ' ') + format.ToTitleCase(trimLeadingSpaces: trimLeadingSpaces, uppercaseAsAcronyms: uppercaseAsAcronyms).Replace(" ", string.Empty);
+            }
+            else
+            {
+                return format.ToTitleCase(trimLeadingSpaces: trimLeadingSpaces, uppercaseAsAcronyms: uppercaseAsAcronyms).Replace(" ", string.Empty);
+            }
+        }
+
+        /// <summary>
+        /// Converts the specified string to Camel Case (e.g. Beer and wine > beerAndWine)        
+        /// </summary>
+        /// <param name="format">Text to format</param>
+        /// <param name="uppercaseAsAcronyms">Consider words that are entirely in uppercase to be acronyms</param>
+        /// <returns></returns>
+        public static string ToCamelCase(this string format, bool trimLeadingSpaces = true, bool uppercaseAsAcronyms = true)
+        {
+            string pascalCase = format.ToPascalCase(trimLeadingSpaces: trimLeadingSpaces, uppercaseAsAcronyms: uppercaseAsAcronyms);
+
+            for (int i = 0; i < format.Length; i++)
+            {
+                if (pascalCase[i] != ' ')
+                {
+                    return string.Empty.PadLeft(i, ' ') + char.ToLowerInvariant(pascalCase[i]) + pascalCase.Substring(i + 1);
+                }               
+            }
+
+            // Empty string
+            return format;
         }
 
         #endregion
