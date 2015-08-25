@@ -107,8 +107,33 @@ namespace SwissKnife.Ext
 
         #endregion
 
+        #region Misc
+
+        /// <summary>
+        /// Indicates whether the specified string is null or an Empty string.
+        /// </summary>
+        /// <param name="value">The string to test</param>
+        /// <returns></returns>
+        public static bool IsNullOrEmpty(this string value)
+        {
+            return string.IsNullOrEmpty(value);
+        }
+
+        /// <summary>
+        /// Indicates whether a specified string is null, empty, or consists only of white-space characters.
+        /// </summary>
+        /// <param name="value">The string to test</param>
+        /// <returns></returns>
+        public static bool IsNullOrWhiteSpace(this string value)
+        {
+            return string.IsNullOrWhiteSpace(value);
+        }
+
+        #endregion
+
         #region Combiners
 
+        // TODO At to a IEnumerableExt
         /// <summary>
         /// Use this to combine infinite parts with a specified seperator
         /// </summary>

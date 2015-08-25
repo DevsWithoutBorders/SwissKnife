@@ -293,5 +293,58 @@ namespace SwissKnife.Ext.Tests
             }
         }
 
+        public class IsNullOrEmpty
+        {
+            [Test]
+            public void Null_value()
+            {
+                string value = null;
+                Assert.IsTrue(StringExt.IsNullOrEmpty(value));
+            }
+
+            [Test]
+            public void Empty_value()
+            {
+                string value = "";
+                Assert.IsTrue(StringExt.IsNullOrEmpty(value), "Test 1");
+
+                value = string.Empty;
+                Assert.IsTrue(StringExt.IsNullOrEmpty(value), "Test 2");
+            }
+
+            [Test]
+            public void Whitespace_value()
+            {
+                string value = " ";
+                Assert.IsFalse(StringExt.IsNullOrEmpty(value), "Test 1");
+            }
+        }
+
+        public class IsNullOrWhiteSpace
+        {
+            [Test]
+            public void Null_value()
+            {
+                string value = null;
+                Assert.IsTrue(StringExt.IsNullOrWhiteSpace(value));
+            }
+
+            [Test]
+            public void Empty_value()
+            {
+                string value = "";
+                Assert.IsTrue(StringExt.IsNullOrWhiteSpace(value), "Test 1");
+
+                value = string.Empty;
+                Assert.IsTrue(StringExt.IsNullOrWhiteSpace(value), "Test 2");
+            }
+
+            [Test]
+            public void Whitespace_value()
+            {
+                string value = " ";
+                Assert.IsTrue(StringExt.IsNullOrWhiteSpace(value), "Test 1");
+            }
+        }
     }
 }
