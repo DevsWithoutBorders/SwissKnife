@@ -25,5 +25,7 @@ namespace SwissKnife.Utils
             else
                 return AppDomain.CurrentDomain.BaseDirectory; 
         }
+
+        // Comment to test feature branch
     }
 }
