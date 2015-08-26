@@ -116,13 +116,13 @@ namespace SwissKnife.Utils
         /// <summary>
         /// Compare the Hash of the supplied Source and check if it equals the supplied hash (casing will be ignored)
         /// </summary>
-        /// <param name="text">The text to compute the hash for</param>
-        /// <param name="hashString">The hash to compare with the computed hash of the text</param>
+        /// <param name="originalText">The text to compute the hash for</param>
+        /// <param name="relatedHash">The hash to compare with the hash that's now compupted for originalText</param>
         /// <param name="hashAlgorithm">Algorithm to use</param>
         /// <returns>Returns true if the hashed matches; otherwise false.</returns>
-        public static bool CompareHash(string original, string hash, HashAlgorithmType hashAlgorithm = HashAlgorithmType.SHA1)
+        public static bool IsValidHash(string originalText, string relatedHash, HashAlgorithmType hashAlgorithm = HashAlgorithmType.SHA1)
         {
-            return ComputeHash(original, hashAlgorithm).Equals(hash, StringComparison.OrdinalIgnoreCase);
+            return ComputeHash(originalText, hashAlgorithm).Equals(relatedHash, StringComparison.OrdinalIgnoreCase);
         }
     }
 

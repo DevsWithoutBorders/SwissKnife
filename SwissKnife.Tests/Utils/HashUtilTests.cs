@@ -103,9 +103,83 @@ namespace SwissKnife.Tests.Utils
             }
         }
 
+        [TestFixture]
+        public class ComputeHashForFile
+        {
+            string testFilePath;
+            byte[] bytesForFile = new byte[] { 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20 };
+            string expectedHash = "BAB791E157462CCF081F4D7B85CA026B3A1940CD";
+
+            [TestFixtureSetUp]
+            public void LocalInit()
+            {
+                this.testFilePath = PathUtil.GetApplicationPath(@"ComputeHashForFile.Files\TestFile.bin");                
+                Directory.CreateDirectory(Path.GetDirectoryName(this.testFilePath));
+
+                File.Delete(this.testFilePath);
+                File.WriteAllBytes(this.testFilePath, this.bytesForFile);
+            }
+
+            [TestFixtureTearDown]
+            public void LocalCleanup()
+            {
+                File.Delete(this.testFilePath);
+                Directory.Delete(Path.GetDirectoryName(this.testFilePath));
+            }
+
+            [Test]
+            public void Parameter_checks()
+            {                
+                var ane = Assert.Throws<ArgumentNullException>(delegate { HashUtil.ComputeHashForFile(null); });
+                Assert.That(ane.Message, Contains.Substring("path"), "Test 1");
+
+                ane = Assert.Throws<ArgumentNullException>(delegate { HashUtil.ComputeHashForFile(""); });
+                Assert.That(ane.Message, Contains.Substring("path"), "Test 2");
+
+                ane = Assert.Throws<ArgumentNullException>(delegate { HashUtil.ComputeHashForFile("  "); });
+                Assert.That(ane.Message, Contains.Substring("path"), "Test 3");
+
+                string invalidPath = this.testFilePath + ".invalid";
+                var fnfe = Assert.Throws<FileNotFoundException>(delegate { HashUtil.ComputeHashForFile(invalidPath); });
+                Assert.That(fnfe.Message, Contains.Substring("At path:"), "Test 3");
+            }
+
+            [Test]
+            public void Validate_hash()
+            {
+                string resultingHash = HashUtil.ComputeHashForFile(this.testFilePath);
+                Assert.AreEqual(this.expectedHash, resultingHash);
+            }
+        }
+
         // TODO Write tests for FileHashing
 
-        // TODO Write tests for CompareHasing
+        public class IsValidHash : HashUtilTests
+        {
+            public void Parameter_checks()
+            {
+                Assert.DoesNotThrow(delegate { HashUtil.IsValidHash(null, null); });
+                Assert.DoesNotThrow(delegate { HashUtil.IsValidHash(string.Empty, string.Empty); });
+            }
+
+            public void Invalid_hash()
+            {
+                Assert.IsFalse(HashUtil.IsValidHash("bla", "blo"));
+            }
+
+            public void Valid_hash()
+            {
+                foreach (var algorithmType in this.algorithmTextAndHashes.Keys)
+                {
+                    var textsAndHashes = this.algorithmTextAndHashes[algorithmType];
+
+                    foreach (var keyValuePair in textsAndHashes)
+                    {
+                        Assert.IsTrue(HashUtil.IsValidHash(keyValuePair.Key, keyValuePair.Value));                        
+                    }
+                }
+            }
+        }
 
         [TestFixtureSetUp]
         public void Init()
