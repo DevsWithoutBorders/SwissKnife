@@ -9,9 +9,6 @@ namespace SwissKnife.Utils
 {
     public static class PathUtil
     {
-        // Comment in Master to test working with feature branch
-        // Second Comment in Master
-
         /// <summary>
         /// Get the path of the application that's running
         /// </summary>
@@ -28,10 +25,5 @@ namespace SwissKnife.Utils
             else
                 return AppDomain.CurrentDomain.BaseDirectory; 
         }
-
-        // Comment to test feature branch
-        // Comment second command to test feature branch
-        // Commend three on featuree branch
-        // Commend four on featuree branch
     }
 }
