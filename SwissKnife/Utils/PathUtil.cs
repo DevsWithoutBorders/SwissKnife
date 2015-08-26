@@ -9,6 +9,8 @@ namespace SwissKnife.Utils
 {
     public static class PathUtil
     {
+        // Comment in Master to test working with feature branch
+
         /// <summary>
         /// Get the path of the application that's running
         /// </summary>
