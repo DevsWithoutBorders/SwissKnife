@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Globalization;
 using NUnit.Framework;
+using SwissKnife.Attributes;
 using SwissKnife.Ext;
 
 namespace SwissKnife.Tests.Ext
@@ -12,10 +13,19 @@ namespace SwissKnife.Tests.Ext
         [Flags]
         public enum TestEnumInt
         {
+            [StringValue("First")]
             FirstValue = 1,
+
+            [StringValue("Second")]
             SecondValue = 2,
+
+            [StringValue("Third", "One")]
+            [StringValue("First | Second", "Two")]
             ThirdValue = FirstValue | SecondValue,
+
+            [StringValue("Forth")]
             ForthValue = 4,
+
             FiftiethValue = 50
         }
 
@@ -86,6 +96,29 @@ namespace SwissKnife.Tests.Ext
             Assert.AreEqual(flagsList.Count, 2);
             Assert.Contains(TestEnumInt.FirstValue, flagsList);
             Assert.Contains(TestEnumInt.SecondValue, flagsList);
+        }
+
+        #endregion
+
+        #region GetStringValue
+
+        [Test]
+        public void GetStringValue_SingleAttribute()
+        {
+            Assert.AreEqual("First", TestEnumInt.FirstValue.GetStringValue());
+        }
+
+        [Test]
+        public void GetStringValue_MultipleAttributes()
+        {
+            Assert.AreEqual("Third", TestEnumInt.ThirdValue.GetStringValue("One"));
+            Assert.AreEqual("First | Second", TestEnumInt.ThirdValue.GetStringValue("Two"));
+        }
+
+        [Test]
+        public void GetStringValue_NoAttributes()
+        {
+            Assert.AreEqual("FiftiethValue", TestEnumInt.FiftiethValue.GetStringValue());
         }
 
         #endregion

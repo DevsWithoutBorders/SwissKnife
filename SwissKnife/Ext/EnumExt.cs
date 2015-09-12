@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
+using SwissKnife.Attributes;
 
 namespace SwissKnife.Ext
 {
@@ -200,6 +202,61 @@ namespace SwissKnife.Ext
                     yield return value;
                 }
             }
+        }
+
+        #endregion
+
+        #region StringValue
+
+        /// <summary>
+        /// Get the first StringValue for a given Enum value. This will only work if you assign the <see cref="StringValueAttribute"/> to the items in your enumeration.
+        /// </summary>
+        /// <param name="value">The Enum value to get the StringValue from.</param>
+        /// <returns>
+        /// The value of the StringValue attribute; otherwise the default enum name
+        /// </returns>
+        public static string GetStringValue(this Enum value)
+        {
+            return GetStringValue(value, null);
+        }
+
+        /// <summary>
+        /// Gets the string value for a given Enum value and StringValue key. This will only work if you assign the <see cref="StringValueAttribute"/> to the items in your enumeration.
+        /// </summary>
+        /// <param name="value">The Enum value to get the StringValue from.</param>
+        /// <param name="key">The case-insensitive Key of the StringValueAttribute to get the StringValue from.</param>
+        /// <returns>
+        /// The value of the StringValue attribute; otherwise the default enum name
+        /// </returns>
+        public static string GetStringValue(this Enum value, string key)
+        {
+            string stringValue = string.Empty;
+
+            // Use reflection to fetch StringValueAttributes
+            Type enumType = value.GetType();
+            FieldInfo fieldInfo = enumType.GetField(value.ToString());
+            var stringValueAttributes = fieldInfo.GetCustomAttributes(typeof(StringValueAttribute), false) as StringValueAttribute[];
+
+            if (stringValueAttributes != null)
+            {
+                // Get the StringValue from the StringValueAttributes matching the key
+                foreach (StringValueAttribute stringValueAttribute in stringValueAttributes)
+                {
+                    if (key == null || String.Equals(stringValueAttribute.Key, key, StringComparison.OrdinalIgnoreCase))
+                    {
+                        stringValue = stringValueAttribute.StringValue;
+                        break;
+                    }
+                }
+            }
+
+            // Fall back to name of Enum
+            if (stringValue.IsNullOrWhiteSpace())
+            {
+                stringValue = value.ToString();
+            }
+
+            return stringValue;
         }
 
         #endregion
