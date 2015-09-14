@@ -71,6 +71,7 @@
   <ItemGroup>
     <Compile Include="Ext\EnumExtTests.cs" />
     <Compile Include="Ext\StringExtTests.cs" />
+    <Compile Include="Ext\SystemExtTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Utils\HashUtilTests.cs" />
     <Compile Include="Utils\PathUtilTests.cs" />

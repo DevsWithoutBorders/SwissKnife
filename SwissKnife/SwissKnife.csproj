@@ -58,6 +58,7 @@
     <Compile Include="Attributes\StringValueAttribute.cs" />
     <Compile Include="Ext\EnumExt.cs" />
     <Compile Include="Ext\StringExt.cs" />
+    <Compile Include="Ext\SystemExt.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Utils\HashUtil.cs" />
     <Compile Include="Utils\PathUtil.cs" />
