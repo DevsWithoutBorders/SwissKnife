@@ -56,6 +56,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Attributes\StringValueAttribute.cs" />
+    <Compile Include="Ext\DateTimeUtil.cs" />
     <Compile Include="Ext\EnumExt.cs" />
     <Compile Include="Ext\StringExt.cs" />
     <Compile Include="Ext\SystemExt.cs" />

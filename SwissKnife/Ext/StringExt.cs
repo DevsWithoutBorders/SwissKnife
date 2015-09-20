@@ -166,5 +166,19 @@ namespace SwissKnife.Ext
         }
 
         #endregion
+
+        #region Conversion
+
+        /// <summary>
+        /// Convert string to a byte[] based on UTF8
+        /// </summary>
+        /// <param name="value">String to convert</param>
+        /// <returns>Array of bytes of the string based on UTF8</returns>
+        public static byte[] ToBytes(this string value)
+        {
+            return Encoding.UTF8.GetBytes(value);
+        }
+
+        #endregion
     }
 }
